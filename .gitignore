@@ -1,0 +1,53 @@
+# ================================
+# WordPress Theme Git Ignore File
+# ================================
+
+# OS/system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Node / frontend build artifacts
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Composer (PHP dependencies)
+vendor/
+composer.lock
+
+# Logs
+*.log
+
+# IDE/editor settings
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+*.swp
+
+# Sass / build cache
+.sass-cache/
+.cache/
+dist/
+build/
+
+# Backup / temp files
+*.bak
+*.tmp
+
+# ================================
+# WordPress-specific (safe to keep even if theme-only)
+# ================================
+
+# WordPress core files (if you ever moved repo up a level)
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-*/
+wp-content/cache/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
