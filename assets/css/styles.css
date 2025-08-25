@@ -268,7 +268,7 @@ a{ color: var(--blue-700); }
 .form-container{
   width: min(50%, 820px);
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
   color: #fff;
 }
 .form-container h2{ margin: 0 0 1rem; }
@@ -346,6 +346,17 @@ body.home{
 body.home > .header{ flex: 0 0 auto; }
 body.home > main   { flex: 1 0 auto; min-height: 0; }
 body.home > footer { flex: 0 0 auto; margin-top: 0; }
+
+/* Sticky footer on the blog index too */
+body.blog{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+body.blog > .header{ flex: 0 0 auto; }
+body.blog > main   { flex: 1 0 auto; min-height: 0; }
+body.blog > footer { flex: 0 0 auto; margin-top: 0; }
+
 
 /* Belt & suspenders: last block inside the page has no bottom margin */
 .home .entry-content > *:last-child{ margin-bottom: 0 !important; }

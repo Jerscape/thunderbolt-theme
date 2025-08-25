@@ -1,0 +1,8 @@
+/* Blog index & archives: quick visual proof */
+.blog .posts-grid, .home .posts-grid, .archive .posts-grid { outline: 2px dashed #9A031E44; }
+.post-card { outline: 1px solid #496A81; }
+
+/* TEST: Blog index/archive should show RED border */
+body { border: 5px solid red; }
+
+

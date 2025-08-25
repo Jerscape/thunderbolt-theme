@@ -1,0 +1,5 @@
+/* Single posts: quick visual proof */
+.single-post .entry-content { outline: 2px dashed #DA742244; padding: 1rem; }
+
+/* TEST: Single post should show BLUE border */
+body { border: 5px solid blue; }
