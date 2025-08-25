@@ -18,7 +18,7 @@
   --color-accent: var(--orange-600);
   --color-danger: var(--red-700);
 
-  --radius: 16px;
+  --radius: 6px;
   --container: 1100px;
   /* --container: 1500px; */
 
@@ -428,13 +428,16 @@ body.blog > footer { flex: 0 0 auto; margin-top: 0; }
 /* === Desktop width + services typography overrides (put at end) === */
 
 /* Make header, hero and services use a wider container on desktop */
+
 @media (min-width: 1024px){
   .header,
   .entry-content .hero,
-  .entry-content .services{
+  .entry-content .services,
+  body.blog main.container {
     --container: 1500px;
   }
 }
+
 
 /* If .media-list is a direct child of .services (no .container), keep it aligned */
 .entry-content .services > .media-list{
@@ -495,3 +498,5 @@ body.blog > footer { flex: 0 0 auto; margin-top: 0; }
   line-height: 1.7;
   margin: .25rem 0 1rem;
 }
+
+
