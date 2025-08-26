@@ -1,8 +1,8 @@
 /* Blog index & archives layout */
 .posts-grid {
   display: grid;
-  /* auto-fit ensures cards stretch to fill width */
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  /* Force 3 columns within the container on desktop */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: stretch; /* makes cards equal height per row */
 }
@@ -17,26 +17,24 @@
   .posts-grid { grid-template-columns: 1fr; }
 }
 
-/* Individual post card */
+/* Individual post card – layout only; visual style is global */
 .post-card {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--color-surface, #fff);
-  /* border: 1px solid color-mix(in srgb, var(--color-text, #1b1b1f) 12%, transparent); */
-  /* border: 2px solid var(--orange-600); */
+  transform: translateY(0);
+}
+
+/* Blog-only overrides (design edge on blog index/archives) */
+.blog .post-card {
   border: 3px solid var(--purple-900);
   border-radius: var(--radius, 12px);
-  padding: var(--space-4, 1rem);
-  transition: box-shadow .18s ease, transform .18s ease;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08); /* shadow always on */
-  transform: translateY(0);               /* normal position */
 }
 
+/* Hover lift (animation/timing lives in global styles) */
 .post-card:hover {
-  transform: translateY(-2px);            /* lift only on hover */
+  transform: translateY(-2px); /* lift only on hover */
 }
-
 
 /* Title */
 .post-card__title a {
@@ -87,3 +85,26 @@
   background: var(--color-primary, #1F0442);
   color: var(--color-primary-contrast, #F6F0ED);
 }
+
+/* --- Blog intro above the grid --- */
+.blog-intro { 
+  margin: 0 0 1.25rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 2rem);
+  background: var(--color-primary, #1F0442);
+  color: white;
+}
+.blog-intro > *:first-child { margin-top: 0; }
+.blog-intro > *:last-child  { margin-bottom: 0; }
+/* Full container width (no paragraph clamp) */
+.blog-intro p { max-width: none; }
+
+.purple_blog_banner{
+  background-color: var(--color-primary, #1F0442);
+  min-height: 20px;
+  width: 100%;
+}
+
+
+
+
+
