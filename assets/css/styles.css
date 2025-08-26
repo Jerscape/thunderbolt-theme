@@ -1,4 +1,8 @@
-/* v2025-08-22b — consolidated, sticky footer, tight seams */
+/* v2025-08-26b — WIDTH REFACTOR (scoped)
+   - Global container: 1500px
+   - Readability caps ONLY on hero + services paragraphs
+   - Gutenberg gap resets scoped to .services (blog/single unaffected)
+*/
 
 /* ====== Theme: Brand Colors & Vars ====== */
 :root{
@@ -19,14 +23,15 @@
   --color-danger: var(--red-700);
 
   --radius: 6px;
+
+  /* WIDTH: single global container */
   --container: 1500px;
-  /* --container: 1500px; */
 
   /* Services defaults (mobile first) */
   --services-marker: 44px;
   --services-icon: 24px;
 
-  /* Section spacing control (you can tweak this globally) */
+  /* Section spacing control */
   --section-gap: 48px;
 }
 
@@ -45,6 +50,7 @@ body{
 }
 a{ color: var(--blue-700); }
 
+/* Global container */
 .container{
   width: min(var(--container), 100%);
   margin-inline: auto;
@@ -182,12 +188,20 @@ a{ color: var(--blue-700); }
 .hero__inner{ display: grid; gap: 1.25rem; align-items: center; }
 .hero__eyebrow{ display: inline-block; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #d7c9ef; }
 .hero__title{ margin: 0; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.1; }
-.hero__desc{ margin: .25rem 0 1rem; color: #e9e2f4; max-width: 62ch; }
+
+/* PROSE CAP for hero description (readability at 1500px) */
+.hero__desc{
+  max-width: 75ch;
+  font-size: clamp(1rem, 0.98rem + 0.35vw, 2rem);
+  line-height: 1.7;
+  margin: .25rem 0 1rem;
+}
+
 .hero__actions{ display: flex; gap: .75rem; flex-wrap: wrap; }
 .hero .btn--primary{ background: var(--orange-600); color: #fff; border: 1px solid rgba(0,0,0,.08); box-shadow: 0 4px 10px rgba(218,116,34,.35); }
 .hero .btn--primary:hover{ background: #b85d18; box-shadow: 0 6px 14px rgba(218,116,34,.5); }
 
-/* ====== Generic Sections (opt-in) ====== */
+/* ====== Generic Sections ====== */
 .section{ padding: 2.5rem 0; }
 .card{ background: var(--sand-50); padding: 1.25rem; }
 .card h3{ margin-top: 0; color: var(--blue-700); }
@@ -195,14 +209,37 @@ a{ color: var(--blue-700); }
 .bg-primary{ background: var(--color-primary); color: var(--color-primary-contrast); }
 .bg-light{ background: var(--sand-50); }
 
-/* ====== Services (scoped so it wins inside the editor) ====== */
-.entry-content .services{ padding: 56px 0; background: transparent; }
-.entry-content .services .container{ max-width: var(--container); margin: 0 auto; padding-inline: 1.25rem; }
+/* ====== Services (scoped) ====== */
+.entry-content .services{ 
+  padding: 56px 0; 
+  background: transparent; 
+}
+.entry-content .services .container{ 
+  max-width: var(--container); 
+  margin: 0 auto; 
+  padding-inline: 1.25rem; 
+}
 .entry-content .services__header{ margin: 0 0 24px; }
 .entry-content .services__header > :is(h1,h2){ margin: 0 0 .25rem; }
-.entry-content .services__intro{ margin: 0; max-width: none; }
+
+/* PROSE CAP: services intro + item paragraphs ONLY */
+.entry-content .services .services__intro,
+.entry-content .services .media-content > p {
+  max-width: 75ch;
+}
+
+/* Lists: let them use full available width (optional) */
+.entry-content .services .media-content ul { max-width: none; }
+
+.entry-content .services .services__intro{
+  margin: 0;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 2rem);
+  line-height: 1.7;
+}
 
 .entry-content .media-list{ display: grid; gap: 1rem; }
+
+/* Each services item: icon + content */
 .entry-content .media-row{
   display: grid;
   grid-template-columns: var(--services-marker) 1fr;
@@ -212,6 +249,7 @@ a{ color: var(--blue-700); }
   align-items: start;
 }
 .entry-content .media-row:first-child{ border-top: 0; }
+
 .entry-content .marker{
   width: var(--services-marker);
   height: var(--services-marker);
@@ -233,6 +271,8 @@ a{ color: var(--blue-700); }
   font-weight: 800;
   letter-spacing: .01em;
 }
+
+/* Bullets */
 .entry-content .media-content ul{
   margin: 0;
   padding-left: 1.1rem;
@@ -240,11 +280,14 @@ a{ color: var(--blue-700); }
   font-size: 1rem;
   line-height: 1.7;
 }
+
+/* Keep your previous column behavior for services (unchanged) */
 @media (min-width: 900px){
   :root{ --services-marker: 52px; --services-icon: 28px; }
   .entry-content .media-list{
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 2.5rem; row-gap: 1.25rem;
+    column-gap: 2.5rem; 
+    row-gap: 1.25rem;
   }
   .entry-content .media-row{
     padding: 1.35rem 0;
@@ -254,7 +297,6 @@ a{ color: var(--blue-700); }
 }
 
 /* ====== Contact / Form band ====== */
-/* OUTER Group (full-width purple band) — consolidated */
 .form-wrapper{
   background: var(--purple-900);
   margin: 0;
@@ -264,7 +306,6 @@ a{ color: var(--blue-700); }
   z-index: 1;
   color: #fff;
 }
-/* INNER Group (centered content, no background) */
 .form-container{
   width: min(50%, 820px);
   margin: 0 auto;
@@ -273,13 +314,16 @@ a{ color: var(--blue-700); }
 }
 .form-container h2{ margin: 0 0 1rem; }
 .form-container .form-intro{ margin: 0 0 1.5rem; }
+
 /* Make WPForms fill that container */
 .form-container .wpforms-container,
 .form-container .wpforms-form{ width: 100%; max-width: none; margin: 0; }
+
 /* Mobile: full width + comfy side padding */
 @media (max-width: 640px){
   .form-container{ width: 100%; padding-inline: 16px; }
 }
+
 /* Remove plugin’s own outer box */
 .form-container .wpforms-container{
   background: transparent !important;
@@ -287,6 +331,7 @@ a{ color: var(--blue-700); }
   border: none !important;
   box-shadow: none !important;
 }
+
 /* Optional: match submit to theme buttons */
 .wpforms-submit,
 .wpforms-form button[type="submit"]{
@@ -309,27 +354,25 @@ footer{
   margin-top: 0;
 }
 
-/* ====== Block gap / wrapper normalization (scoped) ====== */
-.entry-content :where(.is-layout-flow,
-                      .is-layout-constrained,
-                      .is-layout-flex,
-                      .is-layout-grid){ gap: 0; }
-.entry-content :where(.is-layout-flow > * + *,
-                      .is-layout-constrained > * + *){ margin-block-start: 0; }
-/* Top-level block wrappers: no outer margin/padding */
-.entry-content > :where(.wp-block-group,
-                        .wp-block-html,
-                        .wp-block-wpforms){ margin: 0; padding: 0; }
-/* You control vertical rhythm between sections */
+/* ====== Gutenberg Block gap / wrapper normalization — SCOPED TO SERVICES ONLY ====== */
+.entry-content .services :where(.is-layout-flow,
+                                .is-layout-constrained,
+                                .is-layout-flex,
+                                .is-layout-grid){ gap: 0; }
+.entry-content .services :where(.is-layout-flow > * + *,
+                                .is-layout-constrained > * + *){ margin-block-start: 0; }
+
+/* ====== Page rhythm / seams ====== */
 .entry-content{ --section-gap: 48px; margin-bottom: 0; padding-bottom: 0; }
 .entry-content > * + *{ margin-top: var(--section-gap); }
-/* Tight seams */
 .entry-content .hero + .services{ margin-top: 0; }
 .home main{ padding-top: 0; padding-bottom: 0; }
+
 /* Hide stray empties/spacers anywhere in content */
 .entry-content .wp-block-spacer{ height:0 !important; margin:0 !important; padding:0 !important; }
 .entry-content > .wp-block-group:empty,
 .entry-content > .wp-block-columns:empty{ display:none !important; }
+
 /* Ensure the very last block never pushes the footer */
 .entry-content > *:last-child{ margin-bottom: 0 !important; }
 
@@ -337,125 +380,35 @@ footer{
 .form-container form.wpforms-form{ margin-bottom: 0; }
 .form-container :where(.wpforms-submit-container, .wpforms-field):last-child{ margin-bottom: 0 !important; }
 
-/* ====== Sticky footer on the homepage ====== */
-body.home{
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-body.home > .header{ flex: 0 0 auto; }
-body.home > main   { flex: 1 0 auto; min-height: 0; }
-body.home > footer { flex: 0 0 auto; margin-top: 0; }
-
-/* Sticky footer on the blog index too */
+/* ====== Sticky footer pages ====== */
+body.home,
 body.blog{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
+body.home > .header,
 body.blog > .header{ flex: 0 0 auto; }
+body.home > main,
 body.blog > main   { flex: 1 0 auto; min-height: 0; }
+body.home > footer,
 body.blog > footer { flex: 0 0 auto; margin-top: 0; }
-
 
 /* Belt & suspenders: last block inside the page has no bottom margin */
 .home .entry-content > *:last-child{ margin-bottom: 0 !important; }
 
 /* WPForms label colors inside the contact section */
 .entry-content #contact{
-  --wpforms-label-color: #fff;                 /* main labels */
-  --wpforms-label-sublabel-color: rgba(255,255,255,.85); /* sublabels/help */
+  --wpforms-label-color: #fff;
+  --wpforms-label-sublabel-color: rgba(255,255,255,.85);
 }
 .entry-content #contact .wpforms-required-label{ 
   color: var(--color-accent); 
 }
 
-/* ====== WIDTH OVERRIDES (desktop only) ====== */
-/* @media (min-width: 1024px){
-  /* widen header & services to ~1500px on desktop */
-  .header{ --container: 1500px; }
-  .entry-content .services{ --container: 1500px; }
-  
-/* } */ 
-
-@media (min-width: 1024px){
-  /* Widen header, hero, and services to ~1500px on desktop */
-  .header,
-  .entry-content .hero,
-  .entry-content .services{
-    --container: 1500px;
-  }
-}
-
-
-
-/* Ensure Services content respects the section width, even if not wrapped in .container */
-.entry-content .services .media-list{
-  width: min(var(--container), 100%);
-  margin-inline: auto;
-  padding-inline: 1.25rem;
-}
-
-
-
-/* === Services typography (scoped) === */
+/* === Services typography tokens (single source) === */
 .entry-content .services{
-  /* Tweak these three tokens to taste */
-  --svc-title:     clamp(1.4rem, 1rem + 2vw, 2.5rem);   /* “What we do” */
-  --svc-item-head: clamp(1.15rem, 0.95rem + 0.9vw, 1.75rem); /* item headings */
-  --svc-body:      clamp(1rem, 0.95rem + 0.3vw, 1.5rem);     /* bullet text */
-}
-
-/* Section title */
-.entry-content .services .services__header > :is(h1,h2){
-  font-size: var(--svc-title);
-  line-height: 1.2;
-  margin: 0 0 .25rem;
-}
-
-/* Each service’s heading (e.g., “Tech Consulting…”) */
-.entry-content .services .media-content > :is(h2,h3){
-  font-size: var(--svc-item-head);
-  line-height: 1.25;
-}
-
-/* Bullets */
-.entry-content .services .media-content ul{
-  font-size: var(--svc-body);
-  line-height: 1.7;
-}
-
-/* === Desktop width + services typography overrides (put at end) === */
-
-/* Make header, hero and services use a wider container on desktop */
-
-@media (min-width: 1024px){
-  .header,
-  .entry-content .hero,
-  .entry-content .services,
-  body.blog main.container {
-    --container: 1500px;
-  }
-}
-
-
-/* If .media-list is a direct child of .services (no .container), keep it aligned */
-.entry-content .services > .media-list{
-  width: min(var(--container), 100%);
-  margin-inline: auto;
-  padding-inline: 1.25rem;
-}
-
-/* Services intro paragraph: full width of its container + readable size */
-.entry-content .services .services__intro{
-  max-width: none;                                   /* remove the 60ch cap */
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 2rem); /* grows slightly on wide screens */
-  line-height: 1.7;
-}
-
-/* Services typography tokens (easy to tweak) */
-.entry-content .services{
-  --svc-title:     clamp(1.4rem, 1rem + 2vw, 2.5rem);        /* "What we do" */
+  --svc-title:     clamp(1.4rem, 1rem + 2vw, 2.5rem);        /* section title */
   --svc-item-head: clamp(1.15rem, 0.95rem + 0.9vw, 1.75rem); /* item headings */
   --svc-body:      clamp(1rem, 0.95rem + 0.3vw, 1.125rem);   /* bullet text */
 }
@@ -472,42 +425,3 @@ body.blog > footer { flex: 0 0 auto; margin-top: 0; }
   font-size: var(--svc-body);
   line-height: 1.7;
 }
-
-
-/* === Hero typography / width (scoped) === */
-.entry-content .hero{
-  /* easy knobs if you want them later */
-  --hero-title: clamp(2rem, 1.6rem + 3vw, 3.5rem);
-  --hero-body:  clamp(1rem, 0.98rem + 0.35vw, 2rem);
-}
-
-/* Title sizing via token (optional; remove if you like your current size) */
-.entry-content .hero .hero__title{
-  font-size: var(--hero-title);
-  line-height: 1.1;
-  margin: 0;
-}
-
-/* Paragraph width + sizing */
-.entry-content .hero .hero__desc{
-  /* choose ONE of these: */
-  /* max-width: none;     */  /* as wide as the section container */
-  max-width: 75ch;            /* readable line length */
-
-  font-size: var(--hero-body);
-  line-height: 1.7;
-  margin: .25rem 0 1rem;
-}
-
-
-/* === Shared Card Style (global) === */
-/* styles.css — shared look */
-.card, .post-card {
-  background: var(--color-surface, #fff);
-  border: 1px solid color-mix(in srgb, var(--color-text, #1b1b1f) 12%, transparent);
-  border-radius: var(--radius, 6px);
-  padding: var(--space-4, 1rem);
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  transition: box-shadow .18s ease, transform .18s ease;
-}
-.post-card:hover { transform: translateY(-2px); }

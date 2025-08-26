@@ -1,17 +1,18 @@
 /* ===== Blog index & archives ===== */
 
-/* Page container */
+/* Page container spacing */
 .blog .site-content,
 .archive .site-content {
   padding-top: 1.5rem;
   padding-bottom: 3rem;
 }
 
-/* Small kicker line under the page title */
+/* Header & intro */
 .blog .page-title,
 .archive .page-title {
   margin-bottom: .5rem;
 }
+
 .blog .section-kicker {
   display: inline-block;
   font-size: .8rem;
@@ -21,7 +22,7 @@
   margin-bottom: .75rem;
 }
 
-/* Intro block */
+/* Intro block above the grid */
 .blog .blog-intro {
   margin: 0 0 1.5rem 0;
   padding: 1rem 1.25rem;
@@ -29,9 +30,14 @@
   background: #fff;
   border-radius: 5px;
   line-height: 1.65;
+
+  /* align intro with site container */
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Decorative rule */
+/* Decorative rule (optional) */
 .blog .blog-divider {
   height: 4px;
   width: 140px;
@@ -46,11 +52,13 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.25rem;
   align-items: stretch;
-  padding-left: 1rem;   /* breathing room on small screens */
-  padding-right: 1rem;
-  max-width: 1200px;
+
+  /* stretch to the site container and be FLUSH to its edges */
+  max-width: var(--container);
   margin-left: auto;
   margin-right: auto;
+  padding-left: 0;   /* flush edges as requested */
+  padding-right: 0;
 }
 
 @media (max-width: 960px) {
@@ -59,7 +67,7 @@
 
 @media (max-width: 640px) {
   .posts-grid { grid-template-columns: 1fr; }
-  .post-card { margin-bottom: 1.25rem; } /* stacked spacing */
+  .post-card { margin-bottom: 1.25rem; }
   .blog .blog-intro { margin-left: 1rem; margin-right: 1rem; }
 }
 
@@ -69,12 +77,13 @@
   flex-direction: column;
   height: 100%;
   background: var(--color-surface);
-  border: 2px solid var(--purple-900);;
+  border: 2px solid var(--purple-900);
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 1px 0 rgba(0,0,0,.03);
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
+
 .post-card:hover {
   transform: translateY(-2px);
   border-color: var(--orange-600);
@@ -89,43 +98,70 @@
   border-bottom: 1px solid rgba(31, 4, 66, 0.12);
   overflow: hidden;
 }
+
 .post-card .post-thumb img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   transform: scale(1.02);
   transition: transform .4s ease;
 }
+
 .post-card:hover .post-thumb img { transform: scale(1.06); }
 
 /* Category chip */
 .post-card .cat-chip {
   position: absolute;
-  top: .6rem; left: .6rem;
-  font-size: .75rem; font-weight: 600;
-  color: #fff; background: rgba(31,4,66,.92);
+  top: .6rem;
+  left: .6rem;
+  font-size: .75rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(31,4,66,.92);
   border-radius: 4px;
   padding: .2rem .5rem;
   z-index: 1;
 }
 
-/* Card body */
+/* ===== Inner padding & rhythm ===== */
+
+/* 1) Primary path: theme provides .card-body */
 .post-card .card-body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 1rem;
+  padding: 1rem !important;            /* hard guard: content never hits edges */
+}
+
+/* 2) Fallback path: if there is NO .card-body in the markup,
+      pad all direct children except the thumbnail */
+.post-card > :not(.post-thumb) {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+/* top & bottom breathing room for first/last content blocks */
+.post-card > .post-thumb + * { padding-top: 1rem; }
+.post-card > *:last-child     { padding-bottom: 1rem; }
+
+/* Internal spacing (rhythm) so items don’t collapse together */
+.post-card .card-body > * + *,
+.post-card > :not(.post-thumb) > * + * {
+  margin-top: .6rem;
 }
 
 /* Title */
 .post-card .post-title {
   font-size: clamp(1.05rem, .95rem + .4vw, 1.5rem);
   line-height: 1.3;
-  margin: .25rem 0 .35rem;
+  margin: 0; /* rhythm rule above handles spacing */
 }
+
 .post-card .post-title a {
   color: var(--color-text);
   text-decoration: none;
 }
+
 .post-card .post-title a:hover {
   color: var(--purple-900);
   text-decoration: underline;
@@ -136,17 +172,17 @@
 .post-card .post-meta {
   font-size: .85rem;
   color: var(--color-muted);
-  margin-bottom: .5rem;
   display: flex;
   gap: .5rem;
   flex-wrap: wrap;
+  margin: 0; /* rhythm rule above handles spacing */
 }
 
 /* Excerpt */
 .post-card .post-excerpt {
   color: var(--color-text);
   line-height: 1.6;
-  margin-bottom: .85rem;
+  margin: 0; /* rhythm rule above handles spacing */
   flex: 1 1 auto;
 }
 
@@ -158,13 +194,14 @@
   gap: .45rem;
   border: 2px solid var(--purple-900);
   border-radius: 4px;
-  padding: .45rem .8rem;
+  padding: .45rem .8rem;             /* button has its own padding */
   font-weight: 600;
   text-decoration: none;
   color: var(--purple-900);
   background: transparent;
   transition: background .18s ease, color .18s ease;
 }
+
 .post-card .btn:hover {
   background: var(--purple-900);
   color: var(--color-primary-contrast);
@@ -173,32 +210,13 @@
 /* Page header spacing */
 .blog .entry-header,
 .archive .entry-header { margin-bottom: 1rem; }
+
 .blog .header-rule,
 .archive .header-rule { display: none; }
 
-/* Tighten WP default lists in excerpts */
+/* Lists inside excerpts (if present) */
 .post-card .post-excerpt ul,
 .post-card .post-excerpt ol {
   padding-left: 1.1rem;
-  margin: .4rem 0;
+  margin: .4rem 0 0 0;
 }
-
-/* Unsquish cards: let the grid fill the container on desktop */
-@media (min-width: 961px) {
-  .posts-grid {
-    max-width: none;   /* remove center cap */
-    padding-left: 0;   /* no extra inset */
-    padding-right: 0;
-  }
-  /* intro matches container edges on desktop */
-  .blog .blog-intro { 
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-/* Keep comfortable insets only on small screens */
-@media (max-width: 960px) {
-  .posts-grid { padding-left: 1rem; padding-right: 1rem; }
-}
-
