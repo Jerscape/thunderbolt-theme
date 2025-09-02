@@ -220,3 +220,215 @@
   padding-left: 1.1rem;
   margin: .4rem 0 0 0;
 }
+
+/* --- Blog & Archive: mobile side gutters (safe-area aware) --- */
+@media (max-width: 768px) {
+  .blog .site-content,
+  .archive .site-content {
+    /* Give the page area a gutter on phones */
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  /* Keep the grid itself flush within the padded wrapper */
+  .posts-grid {
+    padding-left: 0;
+    padding-right: 0;
+    gap: 1.25rem; /* keep breathing room between cards */
+  }
+
+  /* Match the intro box to the same side gutters */
+  .blog .blog-intro {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+/* ===== Phone-only gutters to stop cards touching screen edges ===== */
+@media (max-width: 640px) {
+  /* 1) Prefer padding on the grid wrapper (cleanest) */
+  .blog .posts-grid,
+  .archive .posts-grid,
+  .home .posts-grid,
+  .page .posts-grid {
+    padding-left: max(16px, env(safe-area-inset-left)) !important;
+    padding-right: max(16px, env(safe-area-inset-right)) !important;
+  }
+
+  /* 2) Belt-and-suspenders: if the wrapper padding is still zeroed by something,
+        give each card its own side margin so borders never kiss the edge. */
+  .blog .post-card,
+  .archive .post-card,
+  .home .post-card,
+  .page .post-card {
+    margin-left: 16px;
+    margin-right: 16px;
+    width: auto;           /* undo any full-viewport width */
+  }
+
+  /* Keep vertical rhythm you already had */
+  .post-card { margin-bottom: 1.25rem; }
+
+  /* Safety: no horizontal scroll from images/blocks */
+  .blog img, .archive img, .home img, .page img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+//* === Phone: make title, intro, and cards the same width === */
+@media (max-width: 640px) {
+  /* 0) Remove the extra side padding that .container adds on <main> */
+  body.blog main.container.section,
+  body.archive main.container.section,
+  body.home main.container.section,
+  body.blog main.container,
+  body.archive main.container,
+  body.home main.container {
+    padding-inline: 0 !important;
+  }
+
+  /* 1) Give title, intro, and grid the SAME outer width + centering */
+  .blog .page-title,
+  .archive .page-title,
+  .home .page-title,
+  .blog .blog-intro,
+  .archive .blog-intro,
+  .home .blog-intro,
+  .blog .posts-grid,
+  .archive .posts-grid,
+  .home .posts-grid {
+    width: calc(100% - 16px);      /* 8px gutter per side */
+    margin-inline: auto !important; /* centered */
+  }
+
+  /* 2) Make sure the grid itself isn't adding side padding */
+  .blog .posts-grid,
+  .archive .posts-grid,
+  .home .posts-grid {
+    padding-inline: 0 !important;
+    gap: 1.25rem; /* keep nice spacing between cards */
+  }
+
+  /* 3) Ensure individual cards don't add extra side margins */
+  .blog .post-card,
+  .archive .post-card,
+  .home .post-card {
+    width: 100%;
+    margin-inline: 0 !important;
+  }
+}
+
+/* Blog index: remove the extra top gap from main.section only on blog */
+.blog main.section {
+  padding-top: 0;
+}
+
+/* Keep the first heading/intro from re-adding space via margins */
+.blog .page-title,
+.blog .entry-title,
+.blog .page-header,
+.blog .entry-header,
+.blog .blog-intro {
+  margin-top: 0;
+}
+
+
+/*new */
+
+/* === BLOG POLISH — v1 (safe drop-in) ===================================== */
+
+/* Card: clean surface, equal heights, gentle lift on hover/focus */
+.blog .post-card{
+  background: #fff;
+  border: 2px solid rgba(31,4,66,.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.blog .post-card:hover{
+  transform: translateY(-2px);
+  border-color: var(--orange-600);
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+.blog .post-card:focus-within{
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+}
+
+/* Thumbnail: consistent 16:9 with a subtle zoom on hover */
+.blog .post-card :is(.thumb, .post-thumbnail){
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--sand-50);
+}
+.blog .post-card :is(.thumb img, .post-thumbnail img, img.wp-post-image){
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .25s ease;
+}
+.blog .post-card:hover :is(.thumb img, .post-thumbnail img, img.wp-post-image){
+  transform: scale(1.03);
+}
+
+/* Body: comfy padding, tidy spacing; content grows to fill height */
+.blog .post-card .post-content{
+  display: flex; flex-direction: column; gap: .6rem;
+  padding: 1rem 1rem 1.1rem;
+  flex: 1 1 auto;
+}
+
+/* Title: crisp clamp + better link styling */
+.blog .post-card h2,
+.blog .post-card .post-title{
+  margin: 0;
+  font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.4rem);
+  line-height: 1.2;
+}
+.blog .post-card h2 a,
+.blog .post-card .post-title a{
+  color: var(--color-text);
+  text-decoration: none;
+}
+.blog .post-card h2 a:hover,
+.blog .post-card .post-title a:hover{
+  color: var(--blue-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Meta row: subtle, readable, no clutter */
+.blog .post-card .post-meta{
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: .6rem; color: var(--color-muted); font-size: .95rem;
+  margin-top: .1rem;
+}
+.blog .post-card .post-meta .dot::before{ content: "•"; opacity: .45; margin: 0 .25rem; }
+
+/* Excerpt: clean 3-line clamp (falls back gracefully) */
+.blog .post-card .post-excerpt{
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: .1rem 0 .25rem;
+}
+
+/* CTA: sits at the bottom for equal-height cards */
+.blog .post-card .post-cta{ margin-top: auto; }
+.blog .post-card .post-cta a{
+  color: var(--orange-600); font-weight: 700; text-decoration: none;
+}
+.blog .post-card .post-cta a:hover{
+  text-decoration: underline; text-underline-offset: 2px;
+}
+
+/* Small-screen nicety: ensure grid items kiss the container gutter (we already aligned the grid earlier) */
+@media (max-width: 640px){
+  .blog .posts-grid{ width: 100%; margin: 0; }
+  .blog .post-card{ margin-inline: 0; }
+}
+
+/*test for push*/

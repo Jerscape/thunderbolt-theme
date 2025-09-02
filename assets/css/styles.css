@@ -25,7 +25,7 @@
   --radius: 6px;
 
   /* WIDTH: single global container */
-  --container: 1500px;
+  --container: 1200px;
 
   /* Services defaults (mobile first) */
   --services-marker: 44px;
@@ -68,7 +68,7 @@ a{ color: var(--blue-700); }
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: .9rem 0;
+  padding: .9rem .9rem 0;
 }
 .nav a{
   color: var(--color-text);
@@ -329,7 +329,7 @@ a{ color: var(--blue-700); }
   color: #fff;
 }
 .form-container{
-  width: min(50%, 820px);
+  width: min(50%, 720px);
   margin: 0 auto;
   text-align: left;
   color: #fff;
@@ -367,6 +367,24 @@ a{ color: var(--blue-700); }
 }
 .wpforms-submit:hover{ filter: brightness(.95); }
 
+/* WPForms: make labels white inside the purple form band */
+.form-container .wpforms-form .wpforms-field-label,
+.form-container .wpforms-form .wpforms-field-sublabel,
+.form-container .wpforms-form .wpforms-field-description,
+.form-container .wpforms-form .wpforms-page-indicator {
+  color: #fff !important;
+  /* optional: */
+  /* font-weight: 600; */
+}
+
+/* Keep the required star as your accent color */
+.form-container .wpforms-form .wpforms-required,
+.form-container .wpforms-form .wpforms-required-label,
+.form-container .wpforms-form .wpforms-field-label .wpforms-required {
+  color: var(--color-accent) !important;
+}
+
+
 /* ====== Footer ====== */
 footer{
   background: var(--blue-700);
@@ -375,6 +393,63 @@ footer{
   text-align: center;
   margin-top: 0;
 }
+
+/* Footer base */
+.site-footer { padding: 1.25rem 0; border-top: 1px solid rgba(0,0,0,.08); }
+
+/* Footer nav */
+/* ====== Footer ====== */
+.site-footer {
+  background: var(--blue-700);
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 0;
+  border-top: 1px solid rgba(255,255,255,.15); /* subtle divider */
+}
+
+/* Footer nav */
+.footer-nav {
+  margin-bottom: 1rem;
+}
+
+.footer-menu {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .875rem 1.25rem;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-menu a {
+  text-decoration: none;
+  color: #fff;
+  font-size: .95rem;
+  transition: color .2s ease;
+}
+
+.footer-menu a:hover,
+.footer-menu a:focus {
+  color: var(--orange-600); /* accent hover color */
+}
+
+/* Footer meta text */
+.footer-meta {
+  font-size: .85rem;
+  color: rgba(255,255,255,.8);
+  margin-top: .75rem;
+}
+
+/* Stack menu vertically on small screens */
+@media (max-width: 640px) {
+  .footer-menu {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 
 /* ====== Gutenberg Block gap / wrapper normalization — SCOPED TO SERVICES ONLY ====== */
 .entry-content .services :where(.is-layout-flow,
@@ -425,6 +500,35 @@ body.page{
 body.page > .header{ flex: 0 0 auto; }
 body.page > main  { flex: 1 0 auto; min-height: 0; }
 body.page > footer{ flex: 0 0 auto; margin-top: 0; }
+
+/* Sticky footer on Single Posts */
+body.single{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+body.single > .header{ flex: 0 0 auto; }
+body.single > main   { flex: 1 0 auto; min-height: 0; }
+body.single > footer { flex: 0 0 auto; margin-top: 0; }
+
+/* Single posts: contain margins so footer can sit at the true bottom */
+.single .entry-content{
+  display: flow-root;        /* creates a new block formatting context */
+}
+.single .entry-content > *:last-child{
+  margin-bottom: 0 !important;  /* belt & suspenders */
+}
+.single article{ margin-bottom: 0; }
+
+/* Clean up empty paragraphs inside post content */
+.single .entry-content p:empty { display:none; margin:0 !important; }
+
+@supports (min-height: 100dvh){
+  body:is(.home, .blog, .page, .single){ min-height: 100dvh; }
+}
+
+
+
 
 /* Belt & suspenders: last block inside the page has no bottom margin */
 .home .entry-content > *:last-child{ margin-bottom: 0 !important; }
@@ -480,4 +584,146 @@ body.page > footer{ flex: 0 0 auto; margin-top: 0; }
   font-size: var(--services-icon);
   line-height: 1;
   display: block;
+}
+
+/* === Phones: blog uses ONLY the main.container as the gutter === */
+@media (max-width: 640px) {
+  /* 1) Set the exact gutter you want via the container */
+  body.blog > main.container.section,
+  body.blog > main.container {
+    padding-inline: 8px !important;  /* <- change to 10/12/16px if you prefer */
+  }
+
+  /* 2) Make title, intro, and grid full-width inside that container */
+  body.blog .page-title,
+  body.blog .blog-intro,
+  body.blog .posts-grid {
+    width: 100% !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important; /* grid/intro won’t add extra gutters */
+  }
+
+  /* 3) Make sure individual cards don’t add side margins */
+  body.blog .post-card {
+    margin-inline: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/*scrolling bheaviour*/
+#contact {
+  scroll-margin-top: 90px; /* adjust this to match your header height */
+}
+
+/* === WPForms: sub-labels + helper text on purple band === */
+#contact .wpforms-form .wpforms-field-sublabel,
+#contact .wpforms-form .wpforms-field-description,
+#contact .wpforms-form .wpforms-field-html {
+  color: rgba(255,255,255,.88) !important; /* soft white for contrast */
+}
+
+/* If you use inline/choice-style sublabels or “inline” labels */
+#contact .wpforms-form .wpforms-field-label-inline {
+  color: #fff !important;
+}
+
+/* Radio/checkbox option labels (keeps them white too) */
+#contact .wpforms-form .wpforms-field-checkbox label,
+#contact .wpforms-form .wpforms-field-radio label {
+  color: #fff !important;
+}
+
+/* Links inside descriptions stay visible and on-brand */
+#contact .wpforms-form .wpforms-field-description a {
+  color: var(--orange-600) !important;
+  text-decoration: underline;
+}
+/* WPForms choice labels on purple band: force readable text */
+#contact .wpforms-form .wpforms-field-checkbox li label,
+#contact .wpforms-form .wpforms-field-radio li label,
+#contact .wpforms-form .wpforms-choices label,
+#contact .wpforms-form .wpforms-choice-item label,
+#contact .wpforms-form .wpforms-choice-item-label,
+#contact .wpforms-form .wpforms-field-label-inline {
+  color: #fff !important;
+  opacity: 1 !important;       /* kills any dimming */
+  font-weight: 500;             /* slight lift for contrast */
+}
+
+/* Optional: make the actual checkboxes on-brand and visible */
+#contact .wpforms-form input[type="checkbox"],
+#contact .wpforms-form input[type="radio"] {
+  accent-color: var(--orange-600); /* modern browsers */
+}
+
+/* Keep inputs readable (you already have this, but leaving here for completeness) */
+#contact .wpforms-form input[type="text"],
+#contact .wpforms-form input[type="email"],
+#contact .wpforms-form input[type="url"],
+#contact .wpforms-form input[type="tel"],
+#contact .wpforms-form input[type="number"],
+#contact .wpforms-form textarea,
+#contact .wpforms-form select {
+  background: #fff !important;
+  color: #1b1b1f !important;
+}
+
+/* === Contact form contrast + spacing polish === */
+
+/* 1) Give inputs a visible edge + subtle lift on dark bg */
+#contact .wpforms-form input[type="text"],
+#contact .wpforms-form input[type="email"],
+#contact .wpforms-form input[type="url"],
+#contact .wpforms-form input[type="tel"],
+#contact .wpforms-form input[type="number"],
+#contact .wpforms-form select,
+#contact .wpforms-form textarea {
+  background: #fff !important;
+  color: #1b1b1f !important;
+  border: 1px solid color-mix(in srgb, #000 18%, #fff); /* readable on purple */
+  border-radius: 10px; /* slightly rounder looks cleaner here */
+  box-shadow: 0 1px 8px rgba(0,0,0,.12);                /* gentle lift */
+}
+
+/* 2) Placeholder readability */
+#contact .wpforms-form ::placeholder {
+  color: color-mix(in srgb, #1b1b1f 55%, #fff); /* muted but visible */
+  opacity: 1; /* Safari */
+}
+
+/* 3) Strong accessible focus */
+#contact .wpforms-form input:focus,
+#contact .wpforms-form select:focus,
+#contact .wpforms-form textarea:focus {
+  outline: 2px solid var(--orange-600);
+  outline-offset: 2px;
+  border-color: var(--orange-600);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--orange-600) 25%, transparent);
+}
+
+/* 4) Section breathing room so it doesn't "kiss" the footer */
+.form-wrapper {
+  padding: 3rem 0 2.5rem;  /* add bottom padding */
+}
+
+/* 5) Heading contrast (the H2 you highlighted) */
+.form-container h2 {
+  color: var(--sand-50);              /* soft white */
+  text-shadow: 0 1px 0 rgba(0,0,0,.18); /* subtle separation from bg */
+  margin-bottom: 1rem;
+}
+
+/* 6) Checkboxes/radios: clearer hit area on dark */
+#contact .wpforms-form .wpforms-choices li {
+  margin-bottom: .4rem;
+}
+#contact .wpforms-form input[type="checkbox"],
+#contact .wpforms-form input[type="radio"] {
+  accent-color: var(--orange-600);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.35) inset; /* visible on purple */
+}
+
+/* WPForms content block intro on purple band: force white */
+#contact .wpforms-field-content :is(h1,h2,h3,h4,h5,h6,p,small) {
+  color: #fff !important;
 }
